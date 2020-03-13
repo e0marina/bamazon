@@ -19,12 +19,12 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   // run the start function after the connection is made
-  start();
+  displayGoods();
 });
 
-function start() {
+function displayGoods() {
   console.log("\n========================\n");
-  connection.query("SELECT * FROM bamazon", function(error, results, fields) {
+  connection.query("SELECT * FROM bamazon", function(error, results) {
     if (error) throw error;
 
     for (let i = 0; i < results.length; i++) {
@@ -43,16 +43,27 @@ function start() {
   });
 }
 
-// inquirer
-//   .prompt({
-//     name: "action",
-//     type: "list",
-//     message: "What would you like to do?",
-//     choices: [
-//       "Find songs by artist",
-//       "Find all artists who appear more than once",
-//       "Find data within a specific range",
-//       "Search for a specific song",
-//       "exit"
-//     ]
-//   })
+function idSearch() {
+  inquirer
+    .prompt({
+      name: "id",
+      type: "input",
+      message: "What product would you like to buy? please use the product ID:"
+    })
+    .then(function(answer) {
+      console.log("chosenID", answer.id);
+      let chosenID = answer.id;
+      let query = "SELECT * FROM bamazon WHERE ?";
+      connection.query(query, { id: chosenID }, function(error, results) {
+        if (error) throw error;
+        console.log("success! search by id");
+        console.log(results);
+
+        for (let i = 0; i < results.length; i++) {
+          console.log(
+            "chosen ID: " + results[i].id + "\n===================\n"
+          );
+        }
+      });
+    });
+}
