@@ -1,16 +1,17 @@
+//npm requirements
+
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 
 const connection = mysql.createConnection({
   host: "localhost",
 
-  // Your port; if not 3306
   port: 3306,
 
-  // Your username
+  //  username
   user: "root",
 
-  // Your password
+  //  password
   password: "Wolverines06!",
   database: "bamazonDB"
 });
@@ -25,6 +26,7 @@ connection.connect(function(err) {
 
 function displayGoods() {
   console.log("\n========================\n");
+  //connect to the DB and get data to display to user
   connection.query("SELECT * FROM bamazon", function(error, results) {
     if (error) throw error;
     //loop through data and log id, product name, and price
@@ -41,31 +43,49 @@ function displayGoods() {
       );
       console.log("\n========================\n");
     }
-    idSearch();
+    //call the start function after the products are logged
+    start();
   });
 }
 
-function idSearch() {
+function start() {
   inquirer
     .prompt({
       name: "id",
       type: "input",
-      message: "What product would you like to buy? please use the product ID:"
+      message: "What product would you like to buy? please use the product ID: "
+    })
+
+    .then(function(answer) {
+      let chosenID = answer.id;
+      console.log(chosenID);
+
+      //   let query = "SELECT * FROM bamazon WHERE ?";
+      //   connection.query(query, { id: chosenID }, function(error, results) {
+      //     if (error) throw error;
+
+      //     console.log(results);
+      //   });
+    });
+}
+console.log(chosenID);
+
+function chooseUnits() {
+  inquirer
+    .prompt({
+      name: "stock_quantity",
+      type: "input",
+      message: "How many units?"
     })
     .then(function(answer) {
-      console.log("chosenID", answer.id);
-      let chosenID = answer.id;
+      let chosenUnits = answer.stock_quantity;
       let query = "SELECT * FROM bamazon WHERE ?";
-      connection.query(query, { id: chosenID }, function(error, results) {
+      connection.query(query, { stock_quantity: chosenUnits }, function(
+        error,
+        results
+      ) {
         if (error) throw error;
-        // console.log("success! search by id");
-        // console.log(results);
-
-        for (let i = 0; i < results.length; i++) {
-          console.log(
-            "chosen ID: " + results[i].id + "\n===================\n"
-          );
-        }
+        console.log(results);
       });
     });
 }
