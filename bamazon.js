@@ -24,6 +24,7 @@ connection.connect(function(err) {
   displayGoods();
 });
 
+//instead of the below use a list they can arrow through
 function displayGoods() {
   console.log("\n========================\n");
   //connect to the DB and get data to display to user
@@ -50,25 +51,40 @@ function displayGoods() {
 
 function start() {
   inquirer
-    .prompt({
-      name: "id",
-      type: "input",
-      message: "What product would you like to buy? please use the product ID: "
-    })
+    .prompt(
+      {
+        name: "id",
+        type: "input",
+        message:
+          "What product would you like to buy? please use the product ID: ",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      },
+      {
+        name: "stock_quantity",
+        type: "input",
+        message: "How many units?"
+      }
+    )
 
     .then(function(answer) {
       let chosenID = answer.id;
+      let chosenUnits = answer.stock_quantity;
       console.log(chosenID);
+      console.log(chosenUnits);
 
       //   let query = "SELECT * FROM bamazon WHERE ?";
       //   connection.query(query, { id: chosenID }, function(error, results) {
       //     if (error) throw error;
 
       //     console.log(results);
-      //   });
     });
+  // });
 }
-console.log(chosenID);
 
 function chooseUnits() {
   inquirer
@@ -78,7 +94,6 @@ function chooseUnits() {
       message: "How many units?"
     })
     .then(function(answer) {
-      let chosenUnits = answer.stock_quantity;
       let query = "SELECT * FROM bamazon WHERE ?";
       connection.query(query, { stock_quantity: chosenUnits }, function(
         error,
