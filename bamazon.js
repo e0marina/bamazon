@@ -1,7 +1,7 @@
-var mysql = require("mysql");
-var inquirer = require("inquirer");
+const mysql = require("mysql");
+const inquirer = require("inquirer");
 
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
 
   // Your port; if not 3306
@@ -18,7 +18,8 @@ var connection = mysql.createConnection({
 // connect to the mysql server and sql database
 connection.connect(function(err) {
   if (err) throw err;
-  // run the start function after the connection is made
+  // run the displayGoods function after the connection is made
+
   displayGoods();
 });
 
@@ -26,7 +27,7 @@ function displayGoods() {
   console.log("\n========================\n");
   connection.query("SELECT * FROM bamazon", function(error, results) {
     if (error) throw error;
-
+    //loop through data and log id, product name, and price
     for (let i = 0; i < results.length; i++) {
       console.log(
         "id: " +
@@ -40,6 +41,7 @@ function displayGoods() {
       );
       console.log("\n========================\n");
     }
+    idSearch();
   });
 }
 
@@ -56,8 +58,8 @@ function idSearch() {
       let query = "SELECT * FROM bamazon WHERE ?";
       connection.query(query, { id: chosenID }, function(error, results) {
         if (error) throw error;
-        console.log("success! search by id");
-        console.log(results);
+        // console.log("success! search by id");
+        // console.log(results);
 
         for (let i = 0; i < results.length; i++) {
           console.log(
