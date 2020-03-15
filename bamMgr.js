@@ -30,7 +30,7 @@ function menu() {
       type: "list",
       message: "What would you like to do?",
       choices: [
-        "View Products for sale",
+        "View Products for Sale",
         "View Low Inventory",
         "Add to Inventory",
         "Add New Product",
@@ -43,7 +43,7 @@ function menu() {
           viewGoods();
           break;
 
-        case "See Low Inventory":
+        case "View Low Inventory":
           lowInventory();
           break;
 

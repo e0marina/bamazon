@@ -23,7 +23,6 @@ connection.connect(function(err) {
   displayGoods();
 });
 
-//instead of the below use a list they can arrow through?
 function displayGoods() {
   console.log("\n========================\n");
   //connect to the DB and get data to display to user
@@ -103,7 +102,7 @@ function start() {
             // console.log(results[0].price);
 
             console.log("Amount Due: $" + chosenUnits * results[0].price);
-            displayGoods();
+            connection.end();
           }
         }
       );
