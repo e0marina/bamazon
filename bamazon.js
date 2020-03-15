@@ -80,16 +80,20 @@ function start() {
     .then(function(answer) {
       let chosenID = answer.id;
       let chosenUnits = answer.stock_quantity;
-      console.log(chosenID);
-      console.log(chosenUnits);
+      // console.log(chosenID);
+      // console.log(chosenUnits);
 
-      //   let query = "SELECT * FROM bamazon WHERE ?";
-      //   connection.query(query, { id: chosenID }, function(error, results) {
-      //     if (error) throw error;
+      let query =
+        "UPDATE bamazon SET stock_quantity=stock_quantity-? WHERE id=?";
+      connection.query(query, [chosenUnits, chosenID], function(
+        error,
+        results
+      ) {
+        if (error) throw error;
 
-      //     console.log(results);
+        console.log(results);
+      });
     });
-  // });
 }
 
 // function chooseUnits() {
