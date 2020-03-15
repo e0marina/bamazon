@@ -51,7 +51,7 @@ function displayGoods() {
 
 function start() {
   inquirer
-    .prompt(
+    .prompt([
       {
         name: "id",
         type: "input",
@@ -67,9 +67,15 @@ function start() {
       {
         name: "stock_quantity",
         type: "input",
-        message: "How many units?"
+        message: "How many units?",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
       }
-    )
+    ])
 
     .then(function(answer) {
       let chosenID = answer.id;
@@ -86,21 +92,21 @@ function start() {
   // });
 }
 
-function chooseUnits() {
-  inquirer
-    .prompt({
-      name: "stock_quantity",
-      type: "input",
-      message: "How many units?"
-    })
-    .then(function(answer) {
-      let query = "SELECT * FROM bamazon WHERE ?";
-      connection.query(query, { stock_quantity: chosenUnits }, function(
-        error,
-        results
-      ) {
-        if (error) throw error;
-        console.log(results);
-      });
-    });
-}
+// function chooseUnits() {
+//   inquirer
+//     .prompt({
+//       name: "stock_quantity",
+//       type: "input",
+//       message: "How many units?"
+//     })
+//     .then(function(answer) {
+//       let query = "SELECT * FROM bamazon WHERE ?";
+//       connection.query(query, { stock_quantity: chosenUnits }, function(
+//         error,
+//         results
+//       ) {
+//         if (error) throw error;
+//         console.log(results);
+//       });
+//     });
+// }
