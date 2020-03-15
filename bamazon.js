@@ -81,36 +81,29 @@ function start() {
       let chosenID = answer.id;
       let chosenUnits = answer.stock_quantity;
 
-      let query = "SELECT price FROM bamazon WHERE id=? AND stock_quantity>?";
-      connection.query(query, [chosenID, chosenUnits], function(
-        error,
-        results
-      ) {
-        if (error) throw error;
+      connection.query(
+        "SELECT price FROM bamazon WHERE id=? AND stock_quantity>?",
+        [chosenID, chosenUnits],
+        function(error, results) {
+          if (error) throw error;
+          // console.log(results);
 
-        if (results.length === 0) {
-          console.log("sorry, insufficient stock on hand!");
-          displayGoods();
+          if (results.length === 0) {
+            console.log("sorry, insufficient stock on hand!");
+            displayGoods();
+          }
+          {
+            "UPDATE bamazon SET stock_quantity=stock_quantity-? WHERE id=?",
+              [chosenUnits, chosenID],
+              function(error) {
+                if (error) throw error;
+                console.log(chosenUnits);
+                console.log(results[0].price);
+
+                console.log("Amount Due: " + chosenUnits * results[0].price);
+              };
+          }
         }
-      });
+      );
     });
 }
-
-// function chooseUnits() {
-//   inquirer
-//     .prompt({
-//       name: "stock_quantity",
-//       type: "input",
-//       message: "How many units?"
-//     })
-//     .then(function(answer) {
-//       let query = "SELECT * FROM bamazon WHERE ?";
-//       connection.query(query, { stock_quantity: chosenUnits }, function(
-//         error,
-//         results
-//       ) {
-//         if (error) throw error;
-//         console.log(results);
-//       });
-//     });
-// }
