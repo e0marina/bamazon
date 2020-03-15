@@ -40,7 +40,7 @@ function menu() {
     .then(function(answer) {
       switch (answer.action) {
         case "View Products for Sale":
-          productsforSale();
+          viewGoods();
           break;
 
         case "See Low Inventory":
@@ -62,4 +62,27 @@ function menu() {
     });
 }
 
-function productsforSale() {}
+function viewGoods() {
+  console.log("\n========================\n");
+  //connect to the DB and get data to display to user
+  connection.query("SELECT * FROM bamazon", function(error, results) {
+    if (error) throw error;
+    console.log(results);
+
+    //loop through data and log id, product name, and price
+    for (let i = 0; i < results.length; i++) {
+      console.log(
+        "id: " +
+          results[i].id +
+          "\n" +
+          "Product Name: " +
+          results[i].product_name +
+          "\n" +
+          "Price: " +
+          results[i].price
+      );
+      console.log("\n========================\n");
+    }
+    menu();
+  });
+}

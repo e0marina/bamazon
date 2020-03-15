@@ -1,6 +1,4 @@
 //npm requirements
-//change for commit 123
-
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 
