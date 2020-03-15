@@ -24,7 +24,7 @@ connection.connect(function(err) {
   displayGoods();
 });
 
-//instead of the below use a list they can arrow through
+//instead of the below use a list they can arrow through?
 function displayGoods() {
   console.log("\n========================\n");
   //connect to the DB and get data to display to user
@@ -78,12 +78,14 @@ function start() {
     ])
 
     .then(function(answer) {
+      //store user input
       let chosenID = answer.id;
       let chosenUnits = answer.stock_quantity;
 
       connection.query(
         "SELECT price FROM bamazon WHERE id=? AND stock_quantity>?",
         [chosenID, chosenUnits],
+
         function(error, results) {
           if (error) throw error;
           // console.log(results);
@@ -97,11 +99,12 @@ function start() {
               [chosenUnits, chosenID],
               function(error) {
                 if (error) throw error;
-                console.log(chosenUnits);
-                console.log(results[0].price);
-
-                console.log("Amount Due: " + chosenUnits * results[0].price);
               };
+            // console.log(chosenUnits);
+            // console.log(results[0].price);
+
+            console.log("Amount Due: $" + chosenUnits * results[0].price);
+            displayGoods();
           }
         }
       );
