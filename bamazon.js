@@ -80,18 +80,18 @@ function start() {
     .then(function(answer) {
       let chosenID = answer.id;
       let chosenUnits = answer.stock_quantity;
-      // console.log(chosenID);
-      // console.log(chosenUnits);
 
-      let query =
-        "UPDATE bamazon SET stock_quantity=stock_quantity-? WHERE id=?";
-      connection.query(query, [chosenUnits, chosenID], function(
+      let query = "SELECT price FROM bamazon WHERE id=? AND stock_quantity>?";
+      connection.query(query, [chosenID, chosenUnits], function(
         error,
         results
       ) {
         if (error) throw error;
 
-        console.log(results);
+        if (results.length === 0) {
+          console.log("sorry, insufficient stock on hand!");
+          displayGoods();
+        }
       });
     });
 }
