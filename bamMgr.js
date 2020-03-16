@@ -65,7 +65,7 @@ const viewGoods = () => {
   //connect to the DB and get data to display to user
   connection.query("SELECT * FROM bamazon", function(error, results) {
     if (error) throw error;
-    console.log(results);
+    // console.log(results);
 
     //loop through data and log id, product name, and price
     for (let i = 0; i < results.length; i++) {
@@ -93,9 +93,55 @@ const lowInventory = () => {
       //   console.log(results);
       for (let i = 0; i < results.length; i++) {
         console.log(
-          "Low Inventory Products: " + results[i].product_name + "\n"
+          "Low Inventory Product(s): " + results[i].product_name + "\n"
         );
       }
     }
   );
+};
+
+const addToInventory = () => {
+  //   viewGoods();
+  inquirer
+    .prompt([
+      {
+        name: "id",
+        type: "input",
+        message:
+          "What product would you like to add inventory to? please use the product ID: ",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      },
+      {
+        name: "stock_quantity",
+        type: "input",
+        message: "How many units do you want to add?",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      }
+    ])
+
+    .then(function(answer) {
+      //store user input
+      let chosenID = answer.id;
+      let chosenUnits = answer.stock_quantity;
+
+      connection.query(
+        "UPDATE bamazon SET stock_quantity=stock_quantity+? WHERE id=?",
+        [chosenUnits, chosenID],
+
+        function(error, results) {
+          if (error) throw error;
+          console.log("you added to the inventory successfully!");
+        }
+      );
+    });
 };
