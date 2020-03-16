@@ -28,7 +28,7 @@ const menu = () => {
       type: "list",
       message: "What would you like to do?",
       choices: [
-        "View Products for Sale",
+        "View All Products for Sale",
         "View Low Inventory",
         "Add to Inventory",
         "Add New Product",
@@ -37,7 +37,7 @@ const menu = () => {
     })
     .then(function(answer) {
       switch (answer.action) {
-        case "View Products for Sale":
+        case "View All Products for Sale":
           viewGoods();
           break;
 
@@ -77,7 +77,10 @@ const viewGoods = () => {
           results[i].product_name +
           "\n" +
           "Price: " +
-          results[i].price
+          results[i].price +
+          "\n" +
+          "Quantity: " +
+          results[i].stock_quantity
       );
       console.log("\n========================\n");
     }
@@ -93,15 +96,15 @@ const lowInventory = () => {
       //   console.log(results);
       for (let i = 0; i < results.length; i++) {
         console.log(
-          "Low Inventory Product(s): " + results[i].product_name + "\n"
+          "Products with fewer than 5 units: " + results[i].product_name + "\n"
         );
       }
+      menu();
     }
   );
 };
 
 const addToInventory = () => {
-  //   viewGoods();
   inquirer
     .prompt([
       {
@@ -141,7 +144,10 @@ const addToInventory = () => {
         function(error, results) {
           if (error) throw error;
           console.log("you added to the inventory successfully!");
+          menu();
         }
       );
     });
 };
+
+const addProduct = () => {};
