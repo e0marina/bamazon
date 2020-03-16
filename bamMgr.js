@@ -20,10 +20,8 @@ connection.connect(function(err) {
   menu();
 });
 
-// const displayGoods = () => {
-
 //offer the manager choices of what to do
-function menu() {
+const menu = () => {
   inquirer
     .prompt({
       name: "action",
@@ -60,9 +58,9 @@ function menu() {
           break;
       }
     });
-}
+};
 
-function viewGoods() {
+const viewGoods = () => {
   console.log("\n========================\n");
   //connect to the DB and get data to display to user
   connection.query("SELECT * FROM bamazon", function(error, results) {
@@ -85,4 +83,19 @@ function viewGoods() {
     }
     menu();
   });
-}
+};
+
+const lowInventory = () => {
+  connection.query(
+    "SELECT product_name FROM bamazon WHERE stock_quantity<5",
+    function(error, results) {
+      if (error) throw error;
+      //   console.log(results);
+      for (let i = 0; i < results.length; i++) {
+        console.log(
+          "Low Inventory Products: " + results[i].product_name + "\n"
+        );
+      }
+    }
+  );
+};
