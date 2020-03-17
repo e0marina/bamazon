@@ -150,4 +150,64 @@ const addToInventory = () => {
     });
 };
 
-const addProduct = () => {};
+const addProduct = () => {
+  inquirer
+    .prompt([
+      {
+        name: "product_name",
+        type: "input",
+        message:
+          "What's the name of the product you'd like to add to inventory?"
+      },
+      {
+        name: "department_name",
+        type: "input",
+        message: "What department will this product fall under?"
+      },
+      {
+        name: "price",
+        type: "input",
+        message: "How much does this product cost?",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      },
+      {
+        name: "stock_quantity",
+        type: "input",
+        message: "How many units?",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      }
+    ])
+
+    .then(function(answer) {
+      //store user input
+      let chosenProdName = answer.product_name;
+      let chosenDeptName = answer.department_name;
+      let chosenPrice = answer.price;
+      let chosenUnits = answer.stock_quantity;
+
+      connection.query(
+        "INSERT INTO bamazon SET ?",
+        {
+          product_name: chosenProdName,
+          department_name: chosenDeptName,
+          price: chosenPrice,
+          stock_quantity: chosenUnits
+        },
+
+        function(error, results) {
+          if (error) throw error;
+          console.log("New product successfully added!");
+        }
+      );
+    });
+};
